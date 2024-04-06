@@ -1,0 +1,4 @@
+/home/nextples/CLionProjects/OPP-labs/OPP_lab1/cmake-build-debug/CMakeFiles/OPP_lab1.dir
+/home/nextples/CLionProjects/OPP-labs/OPP_lab1/cmake-build-debug/CMakeFiles/sequential.dir
+/home/nextples/CLionProjects/OPP-labs/OPP_lab1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/nextples/CLionProjects/OPP-labs/OPP_lab1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
