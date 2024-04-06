@@ -3,4 +3,5 @@ project(OPP_lab2 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(OPP_lab2 main.c)
+add_executable(OPP_lab2 main-ver1.c
+        main-ver2.c)

@@ -1,3 +1,0 @@
-/home/nextples/CLionProjects/OPP-labs/OPP_lab2/cmake-build-debug/CMakeFiles/OPP_lab2.dir
-/home/nextples/CLionProjects/OPP-labs/OPP_lab2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/nextples/CLionProjects/OPP-labs/OPP_lab2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
