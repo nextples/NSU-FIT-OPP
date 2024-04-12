@@ -30,6 +30,7 @@ void printVector (const double* vector, const int n);
 
 void solve(double** matrix, double* bVector, double* xVector, double* yVector, double* AyVector, const int n);
 
+
 int main () {
     int n = 11000;
     double pi = 3.1415;
