@@ -30,7 +30,7 @@ void printVector (const double* vector, const int n);
 
 
 int main () {
-    int n = 10000;
+    int n = 11000;
     double pi = 3.1415;
 
     double** matrix = createMatrix(n);
