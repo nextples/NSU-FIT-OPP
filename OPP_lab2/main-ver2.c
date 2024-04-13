@@ -4,6 +4,9 @@
 #include <time.h>
 #include <omp.h>
 
+#define MODE guided
+#define NUMB 2750
+
 double** createMatrix (const int n);
 
 void deleteMatrix (double** matrix, const int m);
@@ -78,13 +81,13 @@ void solve(double** matrix, double* bVector, double* xVector, double* yVector, d
 //        cnt++;
 
 
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             yVector[i] = 0;
         }
 
 
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 yVector[i] += matrix[i][j] * xVector[j];
@@ -92,7 +95,7 @@ void solve(double** matrix, double* bVector, double* xVector, double* yVector, d
         }
 
 
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             yVector[i] -= bVector[i];
         }
@@ -103,23 +106,23 @@ void solve(double** matrix, double* bVector, double* xVector, double* yVector, d
         bNormSquare = 0;
 
 
-        #pragma omp for reduction(+:yNormSquare)
+        #pragma omp for reduction(+:yNormSquare) schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             yNormSquare += (yVector[i] * yVector[i]);
         }
 
 
-        #pragma omp for reduction(+:bNormSquare)
+        #pragma omp for reduction(+:bNormSquare) schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             bNormSquare += (bVector[i] * bVector[i]);
         }
 
 
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             AyVector[i] = 0;
         }
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 AyVector[i] += matrix[i][j] * yVector[j];
@@ -135,12 +138,12 @@ void solve(double** matrix, double* bVector, double* xVector, double* yVector, d
 
 
 //        double tau = scalarMul(yVector, AyVector, n) / scalarMul(AyVector, AyVector, n);
-        #pragma omp for reduction(+:tauPart1)
+        #pragma omp for reduction(+:tauPart1) schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             tauPart1 += (yVector[i] * AyVector[i]);
         }
 
-        #pragma omp for reduction(+:tauPart2)
+        #pragma omp for reduction(+:tauPart2) schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             tauPart2 += (AyVector[i] * AyVector[i]);
         }
@@ -149,12 +152,12 @@ void solve(double** matrix, double* bVector, double* xVector, double* yVector, d
         tau = tauPart1 / tauPart2;
 
 
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             yVector[i] *= tau;
         }
 
-        #pragma omp for
+        #pragma omp for schedule(MODE, NUMB)
         for (int i = 0; i < n; i++) {
             xVector[i] -= yVector[i];
         }

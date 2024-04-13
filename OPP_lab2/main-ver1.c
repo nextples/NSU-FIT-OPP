@@ -119,7 +119,7 @@ void deleteVector (double* vector) {
 void mulMatrixVector(double **matrix, double *vector, double *res, const int n) {
     setVectorZero(res, n);
 
-#pragma omp parallel for
+#pragma omp parallel for schedule(guided, 2750)
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             res[i] += matrix[i][j] * vector[j];
@@ -128,14 +128,14 @@ void mulMatrixVector(double **matrix, double *vector, double *res, const int n) 
 }
 
 void sub (double* main_vector, const double* vector, const int n) {
-#pragma omp parallel for
+#pragma omp parallel for schedule(guided, 2750)
     for (int i = 0; i < n; i++) {
         main_vector[i] -= vector[i];
     }
 }
 
 void mulByScalar (double* vector, double scalar, int n) {
-#pragma omp parallel for
+#pragma omp parallel for schedule(guided, 2750)
     for (int i = 0; i < n; i++) {
         vector[i] *= scalar;
     }
@@ -164,7 +164,7 @@ double updateX (double** matrix, double* bVector, double* xVector, double* yVect
 
 double scalarMul (const double* vector1, const double* vector2, const int n) {
     double mult = 0;
-#pragma omp parallel for reduction(+:mult)
+#pragma omp parallel for reduction(+:mult) schedule(guided, 2750)
     for (int i = 0; i < n; i++) {
         mult += (vector1[i] * vector2[i]);
     }
