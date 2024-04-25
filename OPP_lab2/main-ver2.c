@@ -4,7 +4,6 @@
 #include <time.h>
 #include <omp.h>
 
-
 #define MODE guided
 #define NUMB 2750
 
