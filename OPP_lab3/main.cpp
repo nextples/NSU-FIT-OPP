@@ -1,5 +1,5 @@
 #include <iostream>
-#include <mpi.h>
+#include <mpi/mpi.h>
 #include <cmath>
 #include <zconf.h>
 #include <cstdio>
@@ -11,11 +11,11 @@ MPI_Comm RowComm;     // Row communicator
 int GridCoords[2];
 int ProcNum = 0;
 int ProcRank = 0;
-int p1 = 4;
-int p2 = 4;
-int n1 = 2000;
-int n2 = 2000;
-int n3 = 2000;
+int p1 = 2;
+int p2 = 2;
+int n1 = 10;
+int n2 = 10;
+int n3 = 10;
 
 void CreateGridCommunicators(){
     int DimSize[2]; // Number of processes in each dimension of the grid
@@ -123,6 +123,7 @@ int main(int argc, char* argv[]) {
     if ((n1 % p1 != 0) || (n3 % p2 != 0)) {
         if (ProcRank == 0) {
             printf ("invalid grid size\n");
+            return -1;
         }
     } else {
         if (ProcRank == 0)
@@ -138,10 +139,10 @@ int main(int argc, char* argv[]) {
 
     if (ProcRank == 0) {
         startTime = MPI_Wtime();
-        //printf("Initial matrix A \n");
-        //PrintMatrix(AMatrix, n1, n2);
-        //printf("Initial matrix B \n");
-        //PrintMatrix(BMatrix, n2, n3);
+        printf("Initial matrix A \n");
+        PrintMatrix(AMatrix, n1, n2);
+        printf("Initial matrix B \n");
+        PrintMatrix(BMatrix, n2, n3);
     }
     // distribute data among the processes
     DataDistribution(AMatrix, BMatrix, Ablock, Bblock, ABlockSize, BBlockSize);
@@ -160,7 +161,7 @@ int main(int argc, char* argv[]) {
 
     // calculate displ
     int* displ =  new int[p1*p2];
-    int* rcount =  new int[p1*p2];
+    int* recvcount =  new int[p1*p2];
     int BlockCount = 0;
     int BlockSize = ABlockSize*BBlockSize;
     int NumCount = 0;
@@ -171,7 +172,7 @@ int main(int argc, char* argv[]) {
         Written = 0;
         for (int i = 0; i < n3; i += BBlockSize) {
             displ[j] = BlockCount;
-            rcount[j] = 1;
+            recvcount[j] = 1;
             j++;
             BlockCount++;
 
@@ -182,19 +183,19 @@ int main(int argc, char* argv[]) {
     }
 
     MPI_Gatherv(Cblock, BlockSize, MPI_DOUBLE, CMatrix,
-                rcount, displ, blocktype, 0, MPI_COMM_WORLD);
+                recvcount, displ, blocktype, 0, MPI_COMM_WORLD);
 
     if (ProcRank == 0){
         double endTime = MPI_Wtime();
         printf("matrix C \n");
 
-        //PrintMatrix(CMatrix, n1, n3);
+        PrintMatrix(CMatrix, n1, n3);
         printf("That took %lf seconds\n",endTime-startTime);
     }
 
     TerminateProcess(AMatrix, BMatrix, CMatrix, Ablock, Bblock, Cblock);
     delete [] displ;
-    delete [] rcount;
+    delete [] recvcount;
     MPI_Finalize();
     return 0;
 }
