@@ -6,6 +6,10 @@
 #define SENDING_TASK_COUNT 787
 #define NO_TASKS_TO_SHARE -565
 
+#define ITERATION_COUNT 5
+#define TASK_COUNT 2000
+#define MIN_TASKS_TO_SHARE 2
+
 #define ANSI_RESET "\033[0m"
 #define ANSI_BLACK "\033[30m"
 #define ANSI_RED "\033[31m"
